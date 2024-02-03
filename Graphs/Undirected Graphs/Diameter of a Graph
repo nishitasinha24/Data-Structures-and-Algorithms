@@ -1,0 +1,35 @@
+from collections import deque
+
+def longest_path(graph):
+    max_distance = 0
+    
+    for vertex in graph:
+        visited = set()
+        distance = {v: float('inf') for v in graph}
+        distance[vertex] = 0
+        
+        q = deque([vertex])
+        
+        while q:
+            cur = q.popleft()
+            visited.add(cur)
+            
+            for neighbor in graph[cur]:
+                if neighbor not in visited and distance[neighbor] > distance[cur] + 1:
+                    q.append(neighbor)
+                    distance[neighbor] = distance[cur] + 1
+                
+        max_distance = max(max_distance, max(distance.values()))
+    return max_distance
+    
+graph = {
+    1: [2, 3],
+    2: [1, 4, 5],
+    3: [1, 6],
+    4: [2],
+    5: [2],
+    6: [3]
+}
+
+result = longest_path(graph)
+print(f"The longest path in the graph is of length: {result}")
